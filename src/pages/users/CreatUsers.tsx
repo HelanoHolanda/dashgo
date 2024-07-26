@@ -17,7 +17,8 @@ import { z } from "zod";
 import { RiAddLine } from "react-icons/ri";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userList } from "../../database/index";
+import { v4 as uuidv4 } from "uuid";
+import { User } from "../../database";
 
 const schema = z
   .object({
@@ -41,25 +42,32 @@ type FormData = {
   password: string;
   confirmPassword: string;
 };
+interface CreateUserProps {
+  addUser: (user: User) => void;
+}
 
-const CreatUsers = () => {
+const CreateUser: React.FC<CreateUserProps> = ({ addUser }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // hook forms usando o useform
+
+  // hook forms
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  //
-  const creatUser: SubmitHandler<FormData> = (data: FormData) => {
-    userList.push({
-      id: data.id,
-      name: data.name,
-      email: data.email,
-    });
+  // função de submit do formulário
+  const createUser: SubmitHandler<FormData> = async (data, event) => {
+    event?.preventDefault(); // prevenindo o padrao
+    const newUser: User = { id: uuidv4(), name: data.name, email: data.email };
+    addUser(newUser); // Passa o novo usuário para a função addUser
+    // simulando uma requisição
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // fechamento de modal e resetando os inputs
+    onClose();
+    reset();
   };
-  console.log(userList);
 
   return (
     <>
@@ -71,7 +79,7 @@ const CreatUsers = () => {
         <ModalContent bg="gray.100">
           <ModalHeader color="gray.600">Criar Usuário</ModalHeader>
           <ModalCloseButton />
-          <form onSubmit={handleSubmit(creatUser)}>
+          <form onSubmit={handleSubmit(createUser)}>
             <ModalBody>
               <SimpleGrid minChildWidth="240px" spacing="4" w="100%">
                 <FormControl isInvalid={!!errors.name}>
@@ -111,7 +119,7 @@ const CreatUsers = () => {
               <Button colorScheme="red" onClick={onClose}>
                 Fechar
               </Button>
-              <Button colorScheme="teal" type="submit">
+              <Button colorScheme="teal" type="submit" isLoading={isSubmitting}>
                 Salvar
               </Button>
             </ModalFooter>
@@ -121,4 +129,4 @@ const CreatUsers = () => {
     </>
   );
 };
-export default CreatUsers;
+export default CreateUser;

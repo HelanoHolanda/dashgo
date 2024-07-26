@@ -15,8 +15,23 @@ import Header from "../../components/forms/Header";
 import SideBar from "../../components/forms/SideBar";
 import Pagination from "../../components/forms/Pagination";
 import CreatUsers from "./CreatUsers";
+import { useState } from "react";
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 const ListUser = () => {
+  // Estado para armazenar a lista de usuários
+  const [users, setUsers] = useState<User[]>([]);
+
+  // Função para adicionar um usuário à lista
+  const addUser = (user: User) => {
+    setUsers((prevUsers) => [...prevUsers, user]);
+  };
+
   return (
     <Box w="100vw" h="100vh" background="gray.900">
       <Header />
@@ -28,7 +43,7 @@ const ListUser = () => {
               Usuários
             </Heading>
 
-            <CreatUsers />
+            <CreatUsers addUser={addUser} />
           </Flex>
           <Table colorScheme="gray.200" mt={4}>
             <Thead>
@@ -45,34 +60,25 @@ const ListUser = () => {
               </Tr>
             </Thead>
             <Tbody color="gray.600">
-              <Tr>
-                <Td px="6">
-                  <Checkbox colorScheme="teal" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">fulano</Text>
-                    <Text fontSize="sm" color="teal.200">
-                      fulano@teste.com
-                    </Text>
-                  </Box>
-                </Td>
-                <Td>05 de Março, 2026</Td>
-              </Tr>
-              <Tr>
-                <Td px="6">
-                  <Checkbox colorScheme="teal" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">fulano</Text>
-                    <Text fontSize="sm" color="teal.200">
-                      fulano@teste.com
-                    </Text>
-                  </Box>
-                </Td>
-                <Td>05 de Março, 2026</Td>
-              </Tr>
+              {users.map((user) => (
+                <Tr key={user.id}>
+                  <Td px="6">
+                    <Checkbox colorScheme="teal" />
+                  </Td>
+                  <Td>
+                    <Box p={4} borderRadius="lg" mb={4}>
+                      <Text fontWeight="bold">{user.name}</Text>
+                      <Text fontSize="sm" color="teal.200">
+                        {user.email}
+                      </Text>
+                    </Box>
+                  </Td>
+                  <Td>
+                    {" "}
+                    <Text>05 de Março, 2026</Text>
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
           <Pagination />
