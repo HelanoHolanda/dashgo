@@ -29,7 +29,7 @@ const ListUser = () => {
 
   // Função para adicionar um usuário à lista
   const addUser = (user: User) => {
-    setUsers((prevUsers) => [...prevUsers, user]);
+    setUsers((prevUsers) => [user, ...prevUsers]);
   };
 
   return (

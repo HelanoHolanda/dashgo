@@ -63,7 +63,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ addUser }) => {
     const newUser: User = { id: uuidv4(), name: data.name, email: data.email };
     addUser(newUser); // Passa o novo usuário para a função addUser
     // simulando uma requisição
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     // fechamento de modal e resetando os inputs
     onClose();
     reset();
