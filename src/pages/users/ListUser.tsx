@@ -35,7 +35,7 @@ const ListUser = () => {
   return (
     <Box w="100vw" h="100vh" background="gray.900">
       <Header />
-      <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6" gap={2}>
+      <Flex w="100%" my="6" maxWidth={1480} mx="auto" px={["4", "6"]} gap={2}>
         <SideBar />
         <Box flex="1" borderRadius={8} background="gray.700" p="2">
           <Flex justify="space-between" align="center">

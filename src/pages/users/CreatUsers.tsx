@@ -76,7 +76,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ addUser }) => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent bg="gray.100">
+        <ModalContent bg="gray.100" mb={8} py={4} mx={["8", "12"]}>
           <ModalHeader color="gray.600">Criar Usuário</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit(createUser)}>
